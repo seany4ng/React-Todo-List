@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
+
+  // An example checklist
+  const checklist = [
+    'Complete React Tutorial',
+    'Finish first project',
+    'Start looking at production code',
+  ]
+
+  // Functions that help with preserving the state of the check boxes
+  const [checked, setChecked] = useState([]);
+
+  // Handles the click by changing the boxes checked
+  const handleCheck = (event) => {
+    var updatedList = [...checked];
+    if (event.target.checked) {
+      updatedList = [...checked, event.target.value];
+    } else {
+      updatedList.splice(checked.indexOf(event.target.value), 1);
+    }
+    setChecked(updatedList);
+  }
+
+  const isChecked = (item) =>
+    checked.includes(item) ? "checked" : "unchecked";
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="todo-list">
+      <div className="list-title">React Todo-List</div>
+      <div className="list-container">
+        {checklist.map((item, index) =>
+          <div key={index}>
+            <input value={item} type="checkbox" onChange={handleCheck} />
+            <span className={isChecked(item)}>{item}</span>
+          </div>)}
+      </div>
     </div>
   );
 }
 
-export default App;
+export default App
